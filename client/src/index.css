@@ -40,92 +40,88 @@
 }
 
 :root {
-  /* Base Colors - Earthy & Trustworthy */
-  --background: 40 20% 98%; /* Warm off-white */
-  --foreground: 200 50% 15%; /* Deep blue-grey text */
+  /* LIGHT MODE - Soft & Elegant */
+  --background: 40 20% 98%;
+  --foreground: 220 40% 12%;
   
-  /* Card & Surfaces */
   --card: 0 0% 100%;
-  --card-foreground: 200 50% 15%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 200 50% 15%;
+  --card-foreground: 220 40% 12%;
+  --card-border: 220 15% 94%;
   
-  /* Primary - Teal/Emerald (Trust in craft) */
-  --primary: 175 65% 40%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 220 40% 12%;
+  
+  --primary: 175 65% 35%; /* Deeper teal */
   --primary-foreground: 0 0% 100%;
   
-  /* Secondary - Terracotta (Earth/Clay) */
-  --secondary: 15 60% 55%;
+  --secondary: 15 65% 50%; /* Richer terracotta */
   --secondary-foreground: 0 0% 100%;
   
-  /* Muted & Accents */
-  --muted: 40 15% 90%;
-  --muted-foreground: 200 20% 40%;
-  --accent: 40 30% 94%;
-  --accent-foreground: 200 50% 15%;
+  --muted: 220 15% 96%;
+  --muted-foreground: 220 15% 45%;
   
-  /* Destructive */
-  --destructive: 0 84.2% 60.2%;
+  --accent: 175 65% 96%;
+  --accent-foreground: 175 65% 25%;
+  
+  --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 98%;
   
-  /* Borders */
-  --border: 200 15% 90%;
-  --input: 200 15% 90%;
-  --ring: 175 65% 40%;
+  --border: 220 15% 92%;
+  --input: 220 15% 92%;
+  --ring: 175 65% 35%;
   
-  --radius: 0.75rem;
-  
-  /* Charts */
-  --chart-1: 175 65% 40%;
-  --chart-2: 15 60% 55%;
-  --chart-3: 45 80% 50%;
-  --chart-4: 200 50% 40%;
-  --chart-5: 280 40% 50%;
+  --radius: 1rem;
 }
 
 .dark {
-  --background: 200 50% 10%;
-  --foreground: 40 20% 95%;
+  /* DARK MODE - Modern & Deep */
+  --background: 220 40% 6%;
+  --foreground: 220 15% 92%;
   
-  --card: 200 45% 13%;
-  --card-foreground: 40 20% 95%;
-  --popover: 200 45% 13%;
-  --popover-foreground: 40 20% 95%;
+  --card: 220 40% 10%;
+  --card-foreground: 220 15% 92%;
+  --card-border: 220 40% 15%;
   
-  --primary: 175 50% 50%;
-  --primary-foreground: 0 0% 100%;
+  --popover: 220 40% 10%;
+  --popover-foreground: 220 15% 92%;
   
-  --secondary: 15 50% 60%;
-  --secondary-foreground: 0 0% 100%;
+  --primary: 175 60% 55%; /* Lighter teal for dark */
+  --primary-foreground: 220 40% 6%;
   
-  --muted: 200 30% 20%;
-  --muted-foreground: 200 20% 70%;
-  --accent: 200 30% 20%;
-  --accent-foreground: 40 20% 95%;
+  --secondary: 15 60% 65%; /* Lighter terracotta */
+  --secondary-foreground: 220 40% 6%;
   
-  --destructive: 0 62.8% 30.6%;
-  --destructive-foreground: 0 0% 98%;
+  --muted: 220 40% 15%;
+  --muted-foreground: 220 15% 70%;
   
-  --border: 200 30% 20%;
-  --input: 200 30% 20%;
-  --ring: 175 50% 50%;
+  --accent: 220 40% 15%;
+  --accent-foreground: 175 60% 85%;
+  
+  --destructive: 0 62% 35%;
+  --destructive-foreground: 220 15% 92%;
+  
+  --border: 220 40% 18%;
+  --input: 220 40% 18%;
+  --ring: 175 60% 55%;
 }
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border transition-colors duration-200;
   }
   body {
-    @apply font-sans antialiased bg-background text-foreground;
+    @apply font-sans antialiased bg-background text-foreground selection:bg-primary/20;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-heading font-bold;
+    @apply font-heading font-bold tracking-tight;
   }
 }
 
-/* Custom Utilities for RTL layout adjustments if needed */
 @layer utilities {
-  .rtl-grid {
-    direction: rtl;
+  .glass {
+    @apply bg-background/60 backdrop-blur-xl border border-border/50;
+  }
+  .card-hover {
+    @apply hover:shadow-2xl hover:shadow-primary/5 hover:-translate-y-1 transition-all duration-300;
   }
 }
