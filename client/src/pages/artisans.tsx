@@ -1,3 +1,4 @@
+import { useState, useMemo } from "react";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { ArtisanCard } from "@/components/artisan/artisan-card";
@@ -7,11 +8,46 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Search, SlidersHorizontal } from "lucide-react";
+import { Search, SlidersHorizontal, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Badge } from "@/components/ui/badge";
 
 export default function Artisans() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedDairas, setSelectedDairas] = useState<string[]>([]);
+  const [priceRange, setPriceRange] = useState([10000]);
+
+  const filteredArtisans = useMemo(() => {
+    return MOCK_ARTISANS.filter(artisan => {
+      const matchesSearch = artisan.name.includes(searchQuery) || artisan.description.includes(searchQuery);
+      const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(artisan.category);
+      const matchesDaira = selectedDairas.length === 0 || selectedDairas.includes(artisan.daira);
+      const matchesPrice = artisan.priceStart <= priceRange[0];
+      return matchesSearch && matchesCategory && matchesDaira && matchesPrice;
+    });
+  }, [searchQuery, selectedCategories, selectedDairas, priceRange]);
+
+  const toggleCategory = (cat: string) => {
+    setSelectedCategories(prev => 
+      prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat]
+    );
+  };
+
+  const toggleDaira = (daira: string) => {
+    setSelectedDairas(prev => 
+      prev.includes(daira) ? prev.filter(d => d !== daira) : [...prev, daira]
+    );
+  };
+
+  const clearFilters = () => {
+    setSearchQuery("");
+    setSelectedCategories([]);
+    setSelectedDairas([]);
+    setPriceRange([10000]);
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-background font-sans">
       <Navbar />
@@ -20,23 +56,45 @@ export default function Artisans() {
         <div className="flex flex-col md:flex-row gap-8">
           
           {/* Mobile Filter Trigger */}
-          <div className="md:hidden flex gap-2">
-            <div className="relative flex-1">
-              <Search className="absolute right-3 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="بحث بالاسم..." className="pr-9" />
+          <div className="md:hidden flex flex-col gap-4">
+             <div className="flex gap-2">
+              <div className="relative flex-1">
+                <Search className="absolute right-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input 
+                  placeholder="بحث بالاسم..." 
+                  className="pr-9" 
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="outline" size="icon">
+                    <SlidersHorizontal className="h-4 w-4" />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="right" dir="rtl" className="w-[300px]">
+                  <div className="mt-6">
+                    <Filters 
+                      selectedCategories={selectedCategories}
+                      toggleCategory={toggleCategory}
+                      selectedDairas={selectedDairas}
+                      toggleDaira={toggleDaira}
+                      priceRange={priceRange}
+                      setPriceRange={setPriceRange}
+                      clearFilters={clearFilters}
+                    />
+                  </div>
+                </SheetContent>
+              </Sheet>
             </div>
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="outline" size="icon">
-                  <SlidersHorizontal className="h-4 w-4" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right" dir="rtl" className="w-[300px]">
-                <div className="mt-6">
-                  <Filters />
-                </div>
-              </SheetContent>
-            </Sheet>
+            {/* Active Mobile Filters */}
+            <ActiveFilters 
+              selectedCategories={selectedCategories} 
+              toggleCategory={toggleCategory}
+              selectedDairas={selectedDairas}
+              toggleDaira={toggleDaira}
+            />
           </div>
 
           {/* Desktop Sidebar Filters */}
@@ -47,27 +105,52 @@ export default function Artisans() {
             </div>
             <div className="relative">
               <Search className="absolute right-3 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="بحث بالاسم..." className="pr-9" />
+              <Input 
+                placeholder="بحث بالاسم..." 
+                className="pr-9"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
             </div>
-            <Filters />
+            <Filters 
+              selectedCategories={selectedCategories}
+              toggleCategory={toggleCategory}
+              selectedDairas={selectedDairas}
+              toggleDaira={toggleDaira}
+              priceRange={priceRange}
+              setPriceRange={setPriceRange}
+              clearFilters={clearFilters}
+            />
           </aside>
 
           {/* Main Content */}
           <div className="flex-1">
-            <div className="mb-6">
-              <h1 className="text-3xl font-heading font-bold mb-2">جميع الحرفيين</h1>
-              <p className="text-muted-foreground">عرض {MOCK_ARTISANS.length} حرفي متاح في تيارت</p>
+            <div className="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div>
+                <h1 className="text-3xl font-heading font-bold mb-2">جميع الحرفيين</h1>
+                <p className="text-muted-foreground">عرض {filteredArtisans.length} حرفي متاح في تيارت</p>
+              </div>
+              <ActiveFilters 
+                className="hidden md:flex"
+                selectedCategories={selectedCategories} 
+                toggleCategory={toggleCategory}
+                selectedDairas={selectedDairas}
+                toggleDaira={toggleDaira}
+              />
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {MOCK_ARTISANS.map((artisan) => (
-                <ArtisanCard key={artisan.id} {...artisan} />
-              ))}
-              {/* Duplicate for demo purposes to fill grid */}
-              {MOCK_ARTISANS.map((artisan) => (
-                <ArtisanCard key={`dup-${artisan.id}`} {...artisan} id={artisan.id + 10} />
-              ))}
-            </div>
+            {filteredArtisans.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredArtisans.map((artisan) => (
+                  <ArtisanCard key={artisan.id} {...artisan} />
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-20 bg-muted/20 rounded-2xl border border-dashed">
+                <p className="text-muted-foreground">لا يوجد حرفيين يطابقون خيارات البحث حالياً.</p>
+                <Button variant="link" onClick={clearFilters} className="mt-2 text-primary">إعادة تعيين الفلاتر</Button>
+              </div>
+            )}
           </div>
         </div>
       </main>
@@ -77,17 +160,42 @@ export default function Artisans() {
   );
 }
 
-function Filters() {
+function ActiveFilters({ selectedCategories, toggleCategory, selectedDairas, toggleDaira, className }: any) {
+  if (selectedCategories.length === 0 && selectedDairas.length === 0) return null;
+
+  return (
+    <div className={`flex flex-wrap gap-2 ${className}`}>
+      {selectedCategories.map((cat: string) => (
+        <Badge key={cat} variant="secondary" className="gap-1 px-3 py-1">
+          {cat}
+          <X className="w-3 h-3 cursor-pointer hover:text-destructive" onClick={() => toggleCategory(cat)} />
+        </Badge>
+      ))}
+      {selectedDairas.map((daira: string) => (
+        <Badge key={daira} variant="outline" className="gap-1 px-3 py-1 border-primary/30 text-primary">
+          {daira}
+          <X className="w-3 h-3 cursor-pointer hover:text-destructive" onClick={() => toggleDaira(daira)} />
+        </Badge>
+      ))}
+    </div>
+  );
+}
+
+function Filters({ selectedCategories, toggleCategory, selectedDairas, toggleDaira, priceRange, setPriceRange, clearFilters }: any) {
   return (
     <div className="space-y-4">
-      <Accordion type="single" collapsible defaultValue="categories" className="w-full">
+      <Accordion type="multiple" defaultValue={["categories", "location"]} className="w-full">
         <AccordionItem value="categories">
           <AccordionTrigger className="font-heading font-bold">التصنيف</AccordionTrigger>
           <AccordionContent>
             <div className="space-y-2 pt-2">
               {CATEGORIES.map((cat) => (
                 <div key={cat.id} className="flex items-center space-x-2 space-x-reverse">
-                  <Checkbox id={`cat-${cat.id}`} />
+                  <Checkbox 
+                    id={`cat-${cat.id}`} 
+                    checked={selectedCategories.includes(cat.label)}
+                    onCheckedChange={() => toggleCategory(cat.label)}
+                  />
                   <Label htmlFor={`cat-${cat.id}`} className="text-sm font-normal cursor-pointer">{cat.label}</Label>
                 </div>
               ))}
@@ -101,7 +209,11 @@ function Filters() {
             <div className="space-y-2 pt-2 h-48 overflow-y-auto pl-2 custom-scrollbar">
               {DAIRAS.map((daira) => (
                 <div key={daira} className="flex items-center space-x-2 space-x-reverse">
-                  <Checkbox id={`loc-${daira}`} />
+                  <Checkbox 
+                    id={`loc-${daira}`} 
+                    checked={selectedDairas.includes(daira)}
+                    onCheckedChange={() => toggleDaira(daira)}
+                  />
                   <Label htmlFor={`loc-${daira}`} className="text-sm font-normal cursor-pointer">{daira}</Label>
                 </div>
               ))}
@@ -110,20 +222,28 @@ function Filters() {
         </AccordionItem>
 
         <AccordionItem value="price">
-          <AccordionTrigger className="font-heading font-bold">السعر</AccordionTrigger>
+          <AccordionTrigger className="font-heading font-bold">السعر الأقصى</AccordionTrigger>
           <AccordionContent>
             <div className="pt-4 px-2 space-y-4">
-              <Slider defaultValue={[50]} max={100} step={1} className="w-full" />
+              <div className="text-center font-bold text-primary">{priceRange[0]} دج</div>
+              <Slider 
+                value={priceRange} 
+                onValueChange={setPriceRange}
+                max={10000} 
+                min={500}
+                step={500} 
+                className="w-full" 
+              />
               <div className="flex justify-between text-xs text-muted-foreground">
-                <span>0 دج</span>
-                <span>+10000 دج</span>
+                <span>500 دج</span>
+                <span>10000 دج</span>
               </div>
             </div>
           </AccordionContent>
         </AccordionItem>
       </Accordion>
       
-      <Button className="w-full mt-4">تطبيق التصفية</Button>
+      <Button variant="ghost" className="w-full mt-4 text-muted-foreground" onClick={clearFilters}>إعادة تعيين الكل</Button>
     </div>
   );
 }
