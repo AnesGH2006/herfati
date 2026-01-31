@@ -9,6 +9,8 @@ import Artisans from "@/pages/artisans";
 import Profile from "@/pages/profile";
 import Chat from "@/pages/chat";
 import Subscription from "@/pages/subscription";
+import Auth from "@/pages/auth";
+import { ThemeProvider } from "next-themes";
 
 function Router() {
   return (
@@ -19,6 +21,7 @@ function Router() {
       <Route path="/chat/:id" component={Chat} />
       <Route path="/chat" component={Chat} />
       <Route path="/subscription" component={Subscription} />
+      <Route path="/auth" component={Auth} />
       <Route component={NotFound} />
     </Switch>
   );
@@ -27,10 +30,12 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Router />
-      </TooltipProvider>
+      <ThemeProvider attribute="class" defaultTheme="light">
+        <TooltipProvider>
+          <Toaster />
+          <Router />
+        </TooltipProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }

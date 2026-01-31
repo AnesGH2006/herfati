@@ -1,12 +1,14 @@
 import { Link, useLocation } from "wouter";
-import { Menu, X, User, Globe } from "lucide-react";
+import { Menu, X, User, Globe, Moon, Sun } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { useTheme } from "next-themes";
 
 export function Navbar() {
   const [location] = useLocation();
   const [isOpen, setIsOpen] = useState(false);
+  const { theme, setTheme } = useTheme();
 
   const navLinks = [
     { href: "/", label: "الرئيسية" },
@@ -44,7 +46,17 @@ export function Navbar() {
         </div>
 
         <div className="hidden md:flex items-center gap-4">
-           <Button variant="ghost" size="icon">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            className="rounded-full"
+          >
+            <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+            <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+            <span className="sr-only">تبديل السمة</span>
+          </Button>
+          <Button variant="ghost" size="icon">
             <Globe className="h-5 w-5" />
           </Button>
           <Link href="/auth">
@@ -82,6 +94,17 @@ export function Navbar() {
                 ))}
               </div>
               <div className="flex flex-col gap-4 mt-auto">
+                <div className="flex items-center justify-between border-t pt-4">
+                  <span className="text-sm font-medium">الوضع الليلي</span>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                    className="rounded-full"
+                  >
+                    {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+                  </Button>
+                </div>
                 <Link href="/auth" onClick={() => setIsOpen(false)}>
                   <Button variant="outline" className="w-full justify-start gap-2">
                     <User className="h-4 w-4" />
