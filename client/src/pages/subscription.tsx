@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { Button } from "@/components/ui/button";
-import { Check, Mail, User, Phone, MapPin, CreditCard, Upload, CheckCircle2, Clock } from "lucide-react";
+import { Check, Mail, User, CreditCard, Upload, Clock, Briefcase, Banknote, Image as ImageIcon } from "lucide-react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -10,8 +10,8 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DAIRAS, CATEGORIES } from "@/lib/constants";
 import { useToast } from "@/hooks/use-toast";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { motion, AnimatePresence } from "framer-motion";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { motion } from "framer-motion";
 
 export default function Subscription() {
   const { toast } = useToast();
@@ -132,14 +132,9 @@ function FeatureItem({ text }: { text: string }) {
 
 function JoinDialog({ plan, onSubmit }: { plan: string, onSubmit: (e: any) => void }) {
   const [receipt, setReceipt] = useState<string | null>(null);
+  const [portfolioCount, setPortfolioCount] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setReceipt(file.name);
-    }
-  };
+  const portfolioRef = useRef<HTMLInputElement>(null);
 
   return (
     <Dialog>
@@ -149,42 +144,46 @@ function JoinDialog({ plan, onSubmit }: { plan: string, onSubmit: (e: any) => vo
           اشترك الآن
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]" dir="rtl">
+      <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto custom-scrollbar" dir="rtl">
         <DialogHeader>
           <DialogTitle className="font-heading text-xl">التسجيل كحرفي - باقة {plan}</DialogTitle>
           <DialogDescription>
-            أدخل معلوماتك وارفع وصل دفع مبلغ الاشتراك لتفعيل حسابك.
+            أدخل معلوماتك المهنية وارفع وصل الدفع لتفعيل حسابك.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={onSubmit} className="space-y-4 pt-4">
-          <div className="space-y-2 text-right">
-            <Label>الاسم الكامل</Label>
-            <div className="relative">
-              <User className="absolute right-3 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="محمد علي" className="pr-9" required />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2 text-right">
+              <Label>الاسم الكامل</Label>
+              <div className="relative">
+                <User className="absolute right-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input placeholder="محمد علي" className="pr-9" required />
+              </div>
+            </div>
+            <div className="space-y-2 text-right">
+              <Label>البريد الإلكتروني</Label>
+              <div className="relative">
+                <Mail className="absolute right-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input type="email" placeholder="example@gmail.com" className="pr-9" required />
+              </div>
             </div>
           </div>
-          <div className="space-y-2 text-right">
-            <Label>البريد الإلكتروني</Label>
-            <div className="relative">
-              <Mail className="absolute right-3 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input type="email" placeholder="example@gmail.com" className="pr-9" required />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2 text-right">
+              <Label>سعر الخدمة يبدأ من (دج)</Label>
+              <div className="relative">
+                <Banknote className="absolute right-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input type="number" placeholder="1500" className="pr-9" required />
+              </div>
             </div>
-          </div>
-          
-          <div className="p-4 border-2 border-dashed rounded-xl bg-muted/20 text-center space-y-2">
-            <Label className="block mb-2 font-bold">وصل الدفع (صورة الوصل)</Label>
-            <input type="file" hidden ref={fileInputRef} accept="image/*" onChange={handleFileChange} required />
-            <Button 
-              type="button" 
-              variant="outline" 
-              className="w-full gap-2 border-primary/50 text-primary"
-              onClick={() => fileInputRef.current?.click()}
-            >
-              <Upload className="h-4 w-4" />
-              {receipt || "ارفع صورة الوصل"}
-            </Button>
-            <p className="text-[10px] text-muted-foreground italic">يمكنك الدفع عبر Baridimob أو مكتب البريد CCP</p>
+            <div className="space-y-2 text-right">
+              <Label>سنوات الخبرة</Label>
+              <div className="relative">
+                <Briefcase className="absolute right-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input type="number" placeholder="5" className="pr-9" required />
+              </div>
+            </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
@@ -211,6 +210,49 @@ function JoinDialog({ plan, onSubmit }: { plan: string, onSubmit: (e: any) => vo
               </Select>
             </div>
           </div>
+
+          <div className="space-y-2">
+            <Label className="font-bold">معرض الصور (أعمالك السابقة)</Label>
+            <input 
+              type="file" 
+              hidden 
+              ref={portfolioRef} 
+              multiple 
+              accept="image/*" 
+              onChange={(e) => setPortfolioCount(e.target.files?.length || 0)} 
+            />
+            <Button 
+              type="button" 
+              variant="outline" 
+              className="w-full gap-2"
+              onClick={() => portfolioRef.current?.click()}
+            >
+              <ImageIcon className="h-4 w-4" />
+              {portfolioCount > 0 ? `تم اختيار ${portfolioCount} صور` : "اختر صور أعمالك"}
+            </Button>
+          </div>
+          
+          <div className="p-4 border-2 border-dashed rounded-xl bg-primary/5 text-center space-y-2">
+            <Label className="block mb-2 font-bold text-primary">وصل الدفع (CCP / Baridimob)</Label>
+            <input 
+              type="file" 
+              hidden 
+              ref={fileInputRef} 
+              accept="image/*" 
+              onChange={(e) => setReceipt(e.target.files?.[0]?.name || null)} 
+              required 
+            />
+            <Button 
+              type="button" 
+              variant="default" 
+              className="w-full gap-2 shadow-lg"
+              onClick={() => fileInputRef.current?.click()}
+            >
+              <Upload className="h-4 w-4" />
+              {receipt || "ارفع صورة الوصل"}
+            </Button>
+          </div>
+
           <Button type="submit" className="w-full h-12 text-lg font-bold mt-4">إرسال طلب الانضمام</Button>
         </form>
       </DialogContent>

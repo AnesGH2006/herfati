@@ -39,6 +39,7 @@ export const artisans = pgTable("artisans", {
   rating: integer("rating").default(0),
   reviewCount: integer("review_count").default(0),
   isVerified: boolean("is_verified").default(false),
+  yearsOfExperience: integer("years_of_experience").default(0),
   imageUrl: text("image_url"),
   portfolioImages: text("portfolio_images").array().default([]),
   languages: text("languages").array().default(["العربية"]),
