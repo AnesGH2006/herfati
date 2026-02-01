@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { Button } from "@/components/ui/button";
-import { Check, Mail, User, Phone, MapPin, Calendar, CreditCard } from "lucide-react";
+import { Check, Mail, User, Phone, MapPin, CreditCard, Upload, CheckCircle2, Clock } from "lucide-react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -11,24 +11,47 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { DAIRAS, CATEGORIES } from "@/lib/constants";
 import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Subscription() {
   const { toast } = useToast();
   const [duration, setDuration] = useState("1");
-
-  const plans = {
-    "1": 4000,
-    "3": 11000, // Discounted
-    "6": 20000  // More discount
-  };
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleJoin = (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitted(true);
     toast({
       title: "تم استلام طلبك!",
-      description: "سنتواصل معك عبر البريد الإلكتروني لتفعيل حسابك الحرفي.",
+      description: "اشتراكك تحت المراجعة حالياً، سنتواصل معك فور التفعيل.",
     });
   };
+
+  if (isSubmitted) {
+    return (
+      <div className="min-h-screen flex flex-col bg-background font-sans">
+        <Navbar />
+        <main className="flex-1 flex items-center justify-center p-4">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="text-center space-y-6 max-w-md p-8 bg-card rounded-3xl border shadow-xl"
+            dir="rtl"
+          >
+            <div className="h-20 w-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+              <Clock className="h-10 w-10 text-primary animate-pulse" />
+            </div>
+            <h1 className="text-3xl font-heading font-bold text-primary">اشتراكك تحت المراجعة</h1>
+            <p className="text-muted-foreground text-lg">
+              شكراً لثقتك بنا. نقوم حالياً بمراجعة وصل الدفع الخاص بك. سيتم تفعيل حسابك الحرفي خلال 24 ساعة كحد أقصى.
+            </p>
+            <Button className="w-full" variant="outline" onClick={() => window.location.href = "/"}>العودة للرئيسية</Button>
+          </motion.div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-background font-sans">
@@ -108,6 +131,16 @@ function FeatureItem({ text }: { text: string }) {
 }
 
 function JoinDialog({ plan, onSubmit }: { plan: string, onSubmit: (e: any) => void }) {
+  const [receipt, setReceipt] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setReceipt(file.name);
+    }
+  };
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -120,7 +153,7 @@ function JoinDialog({ plan, onSubmit }: { plan: string, onSubmit: (e: any) => vo
         <DialogHeader>
           <DialogTitle className="font-heading text-xl">التسجيل كحرفي - باقة {plan}</DialogTitle>
           <DialogDescription>
-            أدخل معلوماتك المهنية وسنتواصل معك لتفعيل حسابك وبدء استقبال الطلبات.
+            أدخل معلوماتك وارفع وصل دفع مبلغ الاشتراك لتفعيل حسابك.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={onSubmit} className="space-y-4 pt-4">
@@ -138,13 +171,22 @@ function JoinDialog({ plan, onSubmit }: { plan: string, onSubmit: (e: any) => vo
               <Input type="email" placeholder="example@gmail.com" className="pr-9" required />
             </div>
           </div>
-          <div className="space-y-2 text-right">
-            <Label>رقم الهاتف</Label>
-            <div className="relative">
-              <Phone className="absolute right-3 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="06XXXXXXXX" className="pr-9" required />
-            </div>
+          
+          <div className="p-4 border-2 border-dashed rounded-xl bg-muted/20 text-center space-y-2">
+            <Label className="block mb-2 font-bold">وصل الدفع (صورة الوصل)</Label>
+            <input type="file" hidden ref={fileInputRef} accept="image/*" onChange={handleFileChange} required />
+            <Button 
+              type="button" 
+              variant="outline" 
+              className="w-full gap-2 border-primary/50 text-primary"
+              onClick={() => fileInputRef.current?.click()}
+            >
+              <Upload className="h-4 w-4" />
+              {receipt || "ارفع صورة الوصل"}
+            </Button>
+            <p className="text-[10px] text-muted-foreground italic">يمكنك الدفع عبر Baridimob أو مكتب البريد CCP</p>
           </div>
+
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2 text-right">
               <Label>الحرفة</Label>

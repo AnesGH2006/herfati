@@ -1,11 +1,8 @@
 import { Hero } from "@/components/home/hero";
-import { ArtisanCard } from "@/components/artisan/artisan-card";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
-import { Button } from "@/components/ui/button";
-import { MOCK_ARTISANS } from "@/lib/constants";
-import { ArrowLeft, ShieldCheck, Users, Sparkles } from "lucide-react";
-import { Link } from "wouter";
+import { ShieldCheck, Users, Sparkles, MapPin, Search, MessageSquare, Star } from "lucide-react";
+import { motion } from "framer-motion";
 
 export default function Home() {
   return (
@@ -15,86 +12,116 @@ export default function Home() {
       <main className="flex-1">
         <Hero />
         
-        {/* Features Section */}
-        <section className="py-16 bg-white" dir="rtl">
+        {/* Why Herfati Section */}
+        <section className="py-24 bg-white dark:bg-background" dir="rtl">
           <div className="container px-4 md:px-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="flex flex-col items-center text-center p-6 rounded-2xl bg-secondary/5 border border-secondary/10 hover:shadow-md transition-all">
-                <div className="h-16 w-16 rounded-full bg-secondary/20 flex items-center justify-center mb-4 text-secondary">
-                  <ShieldCheck className="h-8 w-8" />
-                </div>
-                <h3 className="text-xl font-bold font-heading mb-2">حرفيين موثوقين</h3>
-                <p className="text-muted-foreground">يتم التحقق من هوية ومهارة كل حرفي لضمان جودة الخدمة وسلامتك.</p>
-              </div>
-              <div className="flex flex-col items-center text-center p-6 rounded-2xl bg-primary/5 border border-primary/10 hover:shadow-md transition-all">
-                <div className="h-16 w-16 rounded-full bg-primary/20 flex items-center justify-center mb-4 text-primary">
-                  <Users className="h-8 w-8" />
-                </div>
-                <h3 className="text-xl font-bold font-heading mb-2">تواصل مباشر</h3>
-                <p className="text-muted-foreground">نظام محادثة متطور يسهل عليك الاتفاق على التفاصيل والأسعار بكل سهولة.</p>
-              </div>
-              <div className="flex flex-col items-center text-center p-6 rounded-2xl bg-accent/50 border border-accent/60 hover:shadow-md transition-all">
-                <div className="h-16 w-16 rounded-full bg-accent flex items-center justify-center mb-4 text-foreground">
-                  <Sparkles className="h-8 w-8" />
-                </div>
-                <h3 className="text-xl font-bold font-heading mb-2">جودة مضمونة</h3>
-                <p className="text-muted-foreground">نظام تقييم شفاف يساعدك في اختيار الأفضل لمشروعك بناءً على تجارب الآخرين.</p>
-              </div>
+            <div className="max-w-3xl mx-auto text-center mb-16 space-y-4">
+              <h2 className="text-3xl md:text-5xl font-heading font-bold">لماذا تختار منصة حرفتي؟</h2>
+              <p className="text-lg text-muted-foreground">نحن نغير الطريقة التي يتواصل بها الناس مع الحرفيين في ولاية تيارت، بجعلها أكثر أماناً، سرعة، واحترافية.</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+              <FeatureCard 
+                icon={<ShieldCheck className="h-10 w-10" />}
+                title="موثوقية تامة"
+                description="نقوم بالتحقق من هوية الحرفيين وخلفيتهم المهنية لضمان راحة بالك."
+                delay={0.1}
+              />
+              <FeatureCard 
+                icon={<MessageSquare className="h-10 w-10" />}
+                title="تواصل مباشر"
+                description="نظام محادثة مدمج يتيح لك الاتفاق على كل التفاصيل وإرسال الصور بكل سهولة."
+                delay={0.2}
+              />
+              <FeatureCard 
+                icon={<Star className="h-10 w-10" />}
+                title="نظام تقييم شفاف"
+                description="ساعد الآخرين باختيار الأفضل من خلال قراءة تقييمات الزبائن السابقين."
+                delay={0.3}
+              />
             </div>
           </div>
         </section>
 
-        {/* Featured Artisans */}
-        <section className="py-16 bg-muted/30" dir="rtl">
+        {/* How it works Section */}
+        <section className="py-24 bg-muted/30" dir="rtl">
           <div className="container px-4 md:px-8">
-            <div className="flex justify-between items-end mb-10">
-              <div>
-                <h2 className="text-3xl font-bold font-heading text-foreground">حرفيين مميزين</h2>
-                <p className="text-muted-foreground mt-2">نخبة من أفضل الحرفيين في ولاية تيارت</p>
-              </div>
-              <Link href="/artisans">
-                <Button variant="outline" className="gap-2 hidden md:flex">
-                  عرض الجميع
-                  <ArrowLeft className="w-4 h-4" />
-                </Button>
-              </Link>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {MOCK_ARTISANS.map((artisan) => (
-                <ArtisanCard key={artisan.id} {...artisan} />
-              ))}
-            </div>
-
-            <div className="mt-8 text-center md:hidden">
-              <Link href="/artisans">
-                <Button variant="outline" className="w-full gap-2">
-                  عرض الجميع
-                  <ArrowLeft className="w-4 h-4" />
-                </Button>
-              </Link>
+            <h2 className="text-3xl md:text-4xl font-heading font-bold text-center mb-16">كيف يعمل الموقع؟</h2>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+              <Step 
+                number="01"
+                title="ابحث"
+                description="استخدم الفلاتر المتقدمة لاختيار الحرفة والدائرة في ولاية تيارت."
+                icon={<Search className="w-6 h-6" />}
+              />
+              <Step 
+                number="02"
+                title="تصفح"
+                description="شاهد الملفات الشخصية، معرض الأعمال، والتقييمات لاختيار الحرفي الأنسب."
+                icon={<Users className="w-6 h-6" />}
+              />
+              <Step 
+                number="03"
+                title="تواصل"
+                description="افتح محادثة مباشرة، ناقش التفاصيل، واحصل على عرض سعر."
+                icon={<MessageSquare className="w-6 h-6" />}
+              />
+              <Step 
+                number="04"
+                title="نفذ"
+                description="اتفق على موعد التنفيذ واحصل على خدمة احترافية في منزلك."
+                icon={<MapPin className="w-6 h-6" />}
+              />
             </div>
           </div>
         </section>
-        
-        {/* CTA Section */}
-        <section className="py-20 bg-primary text-primary-foreground relative overflow-hidden" dir="rtl">
-          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/arabesque.png')] opacity-10"></div>
-          <div className="container px-4 md:px-8 relative z-10 text-center">
-            <h2 className="text-3xl md:text-5xl font-bold font-heading mb-6">هل أنت حرفي ماهر؟</h2>
-            <p className="text-lg md:text-xl opacity-90 max-w-2xl mx-auto mb-8">
-              انضم إلى آلاف الحرفيين في تيارت وضاعف دخلك من خلال الوصول إلى عملاء جدد يبحثون عن خدماتك.
+
+        {/* Mission Section */}
+        <section className="py-24 bg-primary text-primary-foreground text-center" dir="rtl">
+          <div className="container px-4 md:px-8 max-w-4xl">
+            <Sparkles className="h-12 w-12 mx-auto mb-6 opacity-80" />
+            <h2 className="text-3xl md:text-5xl font-heading font-bold mb-6">مهمتنا دعم الحرف المحلي</h2>
+            <p className="text-xl md:text-2xl leading-relaxed opacity-90">
+              نهدف في "حرفتي" إلى رقمنة قطاع الحرف في ولاية تيارت، وتوفير فرص عمل أكبر لأبناء المنطقة، مع ضمان جودة الخدمة للمواطنين.
             </p>
-            <Link href="/subscription">
-              <Button size="lg" variant="secondary" className="text-lg px-8 py-6 h-auto font-bold shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-1">
-                سجل الآن وابدأ العمل
-              </Button>
-            </Link>
           </div>
         </section>
       </main>
 
       <Footer />
+    </div>
+  );
+}
+
+function FeatureCard({ icon, title, description, delay }: any) {
+  return (
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay }}
+      viewport={{ once: true }}
+      className="p-8 rounded-3xl bg-card border card-hover text-center space-y-4"
+    >
+      <div className="h-20 w-20 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto text-primary">
+        {icon}
+      </div>
+      <h3 className="text-xl font-bold font-heading">{title}</h3>
+      <p className="text-muted-foreground leading-relaxed">{description}</p>
+    </motion.div>
+  );
+}
+
+function Step({ number, title, description, icon }: any) {
+  return (
+    <div className="relative p-6 text-center space-y-4">
+      <div className="text-5xl font-black font-heading text-primary/10 absolute top-0 left-1/2 -translate-x-1/2 -z-0">
+        {number}
+      </div>
+      <div className="h-12 w-12 rounded-full bg-primary text-white flex items-center justify-center mx-auto relative z-10 shadow-lg">
+        {icon}
+      </div>
+      <h4 className="text-xl font-bold font-heading relative z-10">{title}</h4>
+      <p className="text-sm text-muted-foreground relative z-10">{description}</p>
     </div>
   );
 }
