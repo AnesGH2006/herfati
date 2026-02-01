@@ -12,6 +12,7 @@ import { Search, SlidersHorizontal, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Artisans() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -139,17 +140,35 @@ export default function Artisans() {
               />
             </div>
 
-            {filteredArtisans.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <motion.div 
+              layout 
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+            >
+              <AnimatePresence mode="popLayout">
                 {filteredArtisans.map((artisan) => (
-                  <ArtisanCard key={artisan.id} {...artisan} />
+                  <motion.div
+                    key={artisan.id}
+                    layout
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <ArtisanCard {...artisan} />
+                  </motion.div>
                 ))}
-              </div>
-            ) : (
-              <div className="text-center py-20 bg-muted/20 rounded-2xl border border-dashed">
+              </AnimatePresence>
+            </motion.div>
+
+            {filteredArtisans.length === 0 && (
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="text-center py-20 bg-muted/20 rounded-2xl border border-dashed"
+              >
                 <p className="text-muted-foreground">لا يوجد حرفيين يطابقون خيارات البحث حالياً.</p>
                 <Button variant="link" onClick={clearFilters} className="mt-2 text-primary">إعادة تعيين الفلاتر</Button>
-              </div>
+              </motion.div>
             )}
           </div>
         </div>
