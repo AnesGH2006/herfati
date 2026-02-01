@@ -12,6 +12,38 @@ export default function Home() {
       <main className="flex-1">
         <Hero />
         
+        {/* Usage Guide Section */}
+        <section className="py-24 bg-background" dir="rtl">
+          <div className="container px-4 md:px-8 text-center space-y-16">
+            <div className="max-w-2xl mx-auto space-y-4">
+              <h2 className="text-3xl md:text-5xl font-heading font-bold">كيفية الاستخدام</h2>
+              <p className="text-lg text-muted-foreground">خطوات بسيطة للوصول إلى أفضل الخدمات الحرفية في تيارت</p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+              <div className="absolute top-1/2 left-0 w-full h-0.5 bg-primary/10 -translate-y-1/2 hidden md:block -z-0" />
+              <UsageStep 
+                number="1"
+                title="تصفح الحرفيين"
+                description="ادخل إلى صفحة الحرفيين واستخدم الفلاتر لاختيار التخصص والمنطقة."
+                icon={<Search className="w-8 h-8" />}
+              />
+              <UsageStep 
+                number="2"
+                title="قارن واطلع"
+                description="شاهد الملفات الشخصية، سنوات الخبرة، ومعرض الأعمال لكل حرفي."
+                icon={<Users className="w-8 h-8" />}
+              />
+              <UsageStep 
+                number="3"
+                title="تواصل مباشرة"
+                description="افتح محادثة فورية للاتفاق على الموعد والسعر بكل سهولة."
+                icon={<MessageSquare className="w-8 h-8" />}
+              />
+            </div>
+          </div>
+        </section>
+
         {/* Why Herfati Section */}
         <section className="py-24 bg-white dark:bg-background" dir="rtl">
           <div className="container px-4 md:px-8">
@@ -123,5 +155,23 @@ function Step({ number, title, description, icon }: any) {
       <h4 className="text-xl font-bold font-heading relative z-10">{title}</h4>
       <p className="text-sm text-muted-foreground relative z-10">{description}</p>
     </div>
+  );
+}
+
+function UsageStep({ number, title, description, icon }: any) {
+  return (
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="relative z-10 bg-card border p-8 rounded-3xl space-y-4 shadow-sm hover:shadow-md transition-shadow"
+    >
+      <div className="h-16 w-16 rounded-2xl bg-primary text-white flex items-center justify-center mx-auto shadow-lg shadow-primary/20">
+        {icon}
+      </div>
+      <div className="inline-block px-3 py-1 bg-primary/10 text-primary text-xs font-bold rounded-full mb-2">الخطوة {number}</div>
+      <h3 className="text-xl font-bold font-heading">{title}</h3>
+      <p className="text-muted-foreground text-sm leading-relaxed">{description}</p>
+    </motion.div>
   );
 }

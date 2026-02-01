@@ -38,50 +38,6 @@ export function Hero() {
           >
             منصة تجمع بين الخبرة والإتقان. تصفح مئات الحرفيين، قارن الأسعار، وتواصل مباشرة.
           </motion.p>
-
-          {/* Search Box */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="bg-white/95 backdrop-blur-sm p-4 rounded-2xl shadow-2xl max-w-4xl mx-auto mt-8 flex flex-col md:flex-row gap-4"
-          >
-            <div className="flex-1 space-y-2 text-right">
-              <label className="text-xs font-semibold text-muted-foreground mr-1">ماذا تبحث؟</label>
-              <Select dir="rtl">
-                <SelectTrigger className="border-0 shadow-none bg-transparent focus:ring-0 text-right px-0 text-base font-medium h-auto py-1">
-                  <SelectValue placeholder="اختر الحرفة (نجار، سباك...)" />
-                </SelectTrigger>
-                <SelectContent>
-                  {CATEGORIES.map((cat) => (
-                    <SelectItem key={cat.id} value={cat.id}>{cat.label}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="w-px bg-gray-200 hidden md:block my-2"></div>
-            <div className="h-px bg-gray-200 md:hidden mx-2"></div>
-
-            <div className="flex-1 space-y-2 text-right">
-               <label className="text-xs font-semibold text-muted-foreground mr-1">المنطقة (الدائرة)</label>
-               <Select dir="rtl">
-                <SelectTrigger className="border-0 shadow-none bg-transparent focus:ring-0 text-right px-0 text-base font-medium h-auto py-1">
-                  <SelectValue placeholder="اختر الدائرة" />
-                </SelectTrigger>
-                <SelectContent>
-                  {DAIRAS.map((daira) => (
-                    <SelectItem key={daira} value={daira}>{daira}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <Button size="lg" className="h-auto py-3 px-8 text-lg md:w-auto w-full rounded-xl bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20">
-              <Search className="w-5 h-5 ml-2" />
-              بحث
-            </Button>
-          </motion.div>
         </div>
       </div>
     </div>
