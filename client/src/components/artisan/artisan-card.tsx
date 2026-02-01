@@ -20,77 +20,79 @@ interface ArtisanCardProps {
 
 export function ArtisanCard({ id, name, category, daira, rating, reviews, priceStart, yearsOfExperience = 0, image, isVerified, portfolioImages = [] }: ArtisanCardProps) {
   return (
-    <Card className="overflow-hidden group hover:shadow-xl transition-all duration-300 border-border/50 bg-card/50 backdrop-blur-sm" dir="rtl">
-      <div className="relative h-52 overflow-hidden">
+    <Card className="overflow-hidden group hover:shadow-2xl transition-all duration-500 border-border/50 bg-gradient-to-b from-card to-muted/20 backdrop-blur-md relative" dir="rtl">
+      <div className="relative h-56 overflow-hidden">
         <img 
           src={image} 
           alt={name} 
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-500" />
         
-        <Badge className="absolute top-3 right-3 bg-white/90 text-foreground backdrop-blur-sm hover:bg-white border-none shadow-sm font-bold">
+        <Badge className="absolute top-4 right-4 bg-primary/90 text-primary-foreground backdrop-blur-md border-none shadow-lg font-bold px-3 py-1">
           {category}
         </Badge>
         
         {isVerified && (
-          <div className="absolute top-3 left-3 bg-primary text-white text-[10px] px-2 py-1 rounded-full flex items-center gap-1 shadow-lg font-bold">
-            <BadgeCheck className="w-3 h-3" />
+          <div className="absolute top-4 left-4 bg-green-500 text-white text-[10px] px-2.5 py-1 rounded-full flex items-center gap-1.5 shadow-xl font-bold animate-pulse">
+            <BadgeCheck className="w-3.5 h-3.5" />
             <span>موثوق</span>
           </div>
         )}
 
         {portfolioImages.length > 0 && (
-          <div className="absolute bottom-3 right-3 bg-black/50 text-white text-[10px] px-2 py-1 rounded-full flex items-center gap-1 backdrop-blur-md">
-            <ImageIcon className="w-3 h-3" />
-            <span>+{portfolioImages.length} أعمال</span>
+          <div className="absolute bottom-4 right-4 bg-white/20 hover:bg-white/30 text-white text-[11px] px-3 py-1.5 rounded-xl flex items-center gap-2 backdrop-blur-xl border border-white/10 transition-colors">
+            <ImageIcon className="w-4 h-4" />
+            <span className="font-medium">+{portfolioImages.length} صور</span>
           </div>
         )}
       </div>
       
-      <CardContent className="p-5 space-y-4">
+      <CardContent className="p-6 space-y-5">
         <div className="flex justify-between items-start">
-          <div className="space-y-1">
-            <h3 className="font-heading font-bold text-xl group-hover:text-primary transition-colors">{name}</h3>
-            <div className="flex items-center text-muted-foreground text-sm">
-              <MapPin className="w-3 h-3 ml-1 text-primary" />
+          <div className="space-y-1.5">
+            <h3 className="font-heading font-bold text-2xl tracking-tight group-hover:text-primary transition-colors duration-300">{name}</h3>
+            <div className="flex items-center text-muted-foreground font-medium text-sm">
+              <div className="bg-primary/10 p-1 rounded-md ml-2">
+                <MapPin className="w-3.5 h-3.5 text-primary" />
+              </div>
               {daira}
             </div>
           </div>
-          <div className="flex flex-col items-end gap-1">
-            <div className="flex items-center gap-1 bg-yellow-50 dark:bg-yellow-900/20 px-2 py-1 rounded-lg border border-yellow-100 dark:border-yellow-900/30">
-              <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-              <span className="font-bold text-sm text-yellow-700 dark:text-yellow-400">{rating}</span>
+          <div className="flex flex-col items-end gap-1.5">
+            <div className="flex items-center gap-1.5 bg-amber-50 dark:bg-amber-900/30 px-3 py-1.5 rounded-xl border border-amber-100 dark:border-amber-800/40 shadow-sm">
+              <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+              <span className="font-bold text-base text-amber-700 dark:text-amber-400">{rating}</span>
             </div>
-            <span className="text-[10px] text-muted-foreground">{reviews} مراجعة</span>
+            <span className="text-[11px] font-medium text-muted-foreground/80">{reviews} مراجعة</span>
           </div>
         </div>
         
-        <div className="grid grid-cols-2 gap-4 py-3 border-y border-dashed border-border/50">
-          <div className="flex items-center gap-2">
-            <div className="p-1.5 bg-primary/10 rounded-lg">
-              <Banknote className="w-4 h-4 text-primary" />
+        <div className="grid grid-cols-2 gap-4 py-4 border-y border-dashed border-primary/20 bg-primary/5 rounded-2xl px-4">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-white dark:bg-background rounded-xl shadow-sm">
+              <Banknote className="w-5 h-5 text-primary" />
             </div>
             <div className="flex flex-col">
-              <span className="text-[10px] text-muted-foreground">السعر يبدأ من</span>
-              <span className="font-bold text-sm">{priceStart} دج</span>
+              <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-bold">السعر</span>
+              <span className="font-black text-primary text-base">{priceStart} دج</span>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="p-1.5 bg-secondary/10 rounded-lg">
-              <Briefcase className="w-4 h-4 text-secondary-foreground" />
+          <div className="flex items-center gap-3 border-r border-dashed border-primary/20 pr-4">
+            <div className="p-2 bg-white dark:bg-background rounded-xl shadow-sm">
+              <Briefcase className="w-5 h-5 text-secondary-foreground" />
             </div>
             <div className="flex flex-col">
-              <span className="text-[10px] text-muted-foreground">الخبرة</span>
-              <span className="font-bold text-sm">{yearsOfExperience} سنوات</span>
+              <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-bold">الخبرة</span>
+              <span className="font-black text-secondary-foreground text-base">{yearsOfExperience} سنوات</span>
             </div>
           </div>
         </div>
       </CardContent>
       
-      <CardFooter className="p-5 pt-0">
+      <CardFooter className="p-6 pt-0">
         <Link href={`/profile/${id}`} className="w-full">
-          <Button className="w-full bg-primary/10 text-primary hover:bg-primary hover:text-white font-bold transition-all h-11">
+          <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90 hover:scale-[1.02] active:scale-[0.98] font-bold transition-all h-12 rounded-xl shadow-lg shadow-primary/25 text-base">
             عرض الملف الشخصي
           </Button>
         </Link>
