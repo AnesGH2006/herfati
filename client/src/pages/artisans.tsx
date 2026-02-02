@@ -255,7 +255,7 @@ function Filters({ selectedCategories, toggleCategory, selectedDairas, toggleDai
               />
               <div className="flex justify-between text-xs text-muted-foreground">
                 <span>500 دج</span>
-                <span>10000 دج</span>
+                <span>20000 دج</span>
               </div>
             </div>
           </AccordionContent>

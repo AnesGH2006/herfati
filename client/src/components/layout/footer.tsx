@@ -62,7 +62,7 @@ export function Footer() {
         </div>
         
         <div className="border-t pt-6 text-center text-sm text-muted-foreground">
-          <p>© 2024 حرفتي. جميع الحقوق محفوظة.</p>
+          <p>© 2026 حرفتي. جميع الحقوق محفوظة.</p>
         </div>
       </div>
     </footer>

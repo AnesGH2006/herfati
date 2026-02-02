@@ -21,7 +21,7 @@ export default function Home() {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
-              <div className="absolute top-1/2 left-0 w-full h-0.5 bg-primary/10 -translate-y-1/2 hidden md:block -z-0" />
+              <div className="absolute top-1/2 left-0 w-full h-0.5 bg-primary/10 -translate-y-1/2 hidden md:block z-0" />
               <UsageStep 
                 number="1"
                 title="تصفح الحرفيين"
@@ -146,7 +146,7 @@ function FeatureCard({ icon, title, description, delay }: any) {
 function Step({ number, title, description, icon }: any) {
   return (
     <div className="relative p-6 text-center space-y-4">
-      <div className="text-5xl font-black font-heading text-primary/10 absolute top-0 left-1/2 -translate-x-1/2 -z-0">
+      <div className="text-5xl font-black font-heading text-primary/10 absolute top-0 left-1/2 -translate-x-1/2 z-0">
         {number}
       </div>
       <div className="h-12 w-12 rounded-full bg-primary text-white flex items-center justify-center mx-auto relative z-10 shadow-lg">

@@ -233,7 +233,7 @@ function JoinDialog({ plan, onSubmit }: { plan: string, onSubmit: (e: any) => vo
           </div>
           
           <div className="p-4 border-2 border-dashed rounded-xl bg-primary/5 text-center space-y-2">
-            <Label className="block mb-2 font-bold text-primary">وصل الدفع (CCP / Baridimob)</Label>
+            <Label className="block mb-2 font-bold text-primary">صورة الدفع (CCP / Baridimob) للدفع ارسل للرقم 33085</Label>
             <input 
               type="file" 
               hidden 
@@ -249,7 +249,7 @@ function JoinDialog({ plan, onSubmit }: { plan: string, onSubmit: (e: any) => vo
               onClick={() => fileInputRef.current?.click()}
             >
               <Upload className="h-4 w-4" />
-              {receipt || "ارفع صورة الوصل"}
+              {receipt || "ارفع صورة الدفع"}
             </Button>
           </div>
 

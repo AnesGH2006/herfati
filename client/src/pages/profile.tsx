@@ -20,7 +20,7 @@ export default function Profile() {
       <main className="flex-1 pb-16" dir="rtl">
         {/* Cover Image */}
         <div className="h-64 md:h-80 w-full bg-muted relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+          <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent z-10"></div>
           <img src={artisan.image} alt="cover" className="w-full h-full object-cover blur-sm scale-105" />
         </div>
 
