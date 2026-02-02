@@ -1,3 +1,4 @@
+git add .
 import { Star, MapPin, BadgeCheck, Briefcase, Banknote, Image as ImageIcon } from "lucide-react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -20,14 +21,14 @@ interface ArtisanCardProps {
 
 export function ArtisanCard({ id, name, category, daira, rating, reviews, priceStart, yearsOfExperience = 0, image, isVerified, portfolioImages = [] }: ArtisanCardProps) {
   return (
-    <Card className="overflow-hidden group hover:shadow-2xl transition-all duration-500 border-border/50 bg-gradient-to-b from-card to-muted/20 backdrop-blur-md relative" dir="rtl">
+    <Card className="overflow-hidden group hover:shadow-2xl transition-all duration-500 border-border/50 bg-linear-to-b from-card to-muted/20 backdrop-blur-md relative" dir="rtl">
       <div className="relative h-56 overflow-hidden">
         <img 
           src={image} 
           alt={name} 
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-500" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-500" />
         
         <Badge className="absolute top-4 right-4 bg-primary/90 text-primary-foreground backdrop-blur-md border-none shadow-lg font-bold px-3 py-1">
           {category}
